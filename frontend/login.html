@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corporate Access | Talent Forge Operations</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .auth-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: 18px;
+      padding: 44px 36px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: var(--shadow-card);
+    }
+    .auth-brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .auth-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-pure);
+      margin-bottom: 6px;
+    }
+    .auth-sub {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      margin-bottom: 26px;
+      line-height: 1.45;
+    }
+    .auth-error {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      font-size: 0.85rem;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      display: none;
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <div class="auth-card">
+    <div class="auth-brand-badge">
+      <span class="portal-brand-text" style="font-size: 1.3rem;">Talent Forge</span>
+      <span class="badge-role" style="margin-left: 6px; font-size: 0.72rem;">Operations Access</span>
+    </div>
+    <h2 class="auth-title">Corporate Sign In</h2>
+    <p class="auth-sub">Enter authorized corporate credentials to access the operations console.</p>
+
+    <div id="authError" class="auth-error"></div>
+
+    <form id="loginForm" onsubmit="handleSignIn(event)">
+      <div class="form-group">
+        <label>Username / Employee ID</label>
+        <input type="text" id="username" placeholder="e.g., admin or TF-EMP-MN01" required autofocus>
+      </div>
+
+      <div class="form-group" style="margin-top: 16px;">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="••••••••••••" required>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; margin-top: 22px; padding: 12px; font-size: 0.95rem;">
+        Sign In
+      </button>
+    </form>
+
+    <div style="margin-top: 28px; border-top: 1px solid var(--border-light); padding-top: 16px; text-align: center;">
+      <span style="font-size: 0.74rem; color: var(--text-muted); display: block;">
+        Alpha Auron Private Limited • Strictly Restricted Access
+      </span>
+    </div>
+  </div>
+
+  <script>
+    async function handleSignIn(e) {
+      e.preventDefault();
+      const errBox = document.getElementById("authError");
+      const btn = document.getElementById("submitBtn");
+      errBox.style.display = "none";
+      btn.disabled = true;
+      btn.innerText = "Authenticating...";
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.status === "success") {
+          if (data.user.role === "admin") {
+            window.location.href = "/admin";
+          } else {
+            window.location.href = "/employee";
+          }
+        } else {
+          errBox.innerText = data.message || "Invalid credentials.";
+          errBox.style.display = "block";
+        }
+      } catch (err) {
+        errBox.innerText = "Unable to reach the authentication service.";
+        errBox.style.display = "block";
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Sign In";
+      }
+    }
+  </script>
+</body>
+</html>

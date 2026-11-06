@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Admin Console | Talent Forge</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- TOP EXECUTIVE APP BAR -->
+  <header class="admin-topbar">
+    <div class="topbar-left">
+      <div class="brand-cluster">
+        <h1 class="portal-heading">
+          <span class="portal-brand-text">Talent Forge</span> 
+          <span class="badge-role">Executive Console</span>
+        </h1>
+      </div>
+      <p class="portal-subheading">Alpha Auron Lead Intelligence & Member Conversion Funnel</p>
+    </div>
+    <div class="topbar-actions" style="display: flex; gap: 10px; align-items: center;">
+    <button id="refreshBtn" class="btn btn-refresh-nav btn-sm" onclick="refreshData()">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+  </svg>
+  Refresh Data
+</button>
+      <a href="/api/admin/download-excel" class="btn btn-download-excel btn-sm">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export Master Excel (.xlsx)
+      </a>
+      <button class="btn btn-outline btn-sm" onclick="handleLogout()" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.35); font-weight: 600;">
+        Sign Out
+      </button>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <!-- METRIC STAT TILES -->
+    <section class="metrics-deck">
+      <div class="kpi-card glow-cyan">
+        <span class="kpi-label">Total Enquiries</span>
+        <div class="kpi-value" id="mTotal">0</div>
+        <span class="kpi-foot">All Funnel Leads</span>
+      </div>
+      <div class="kpi-card glow-blue">
+        <span class="kpi-label">New Enquiries</span>
+        <div class="kpi-value" id="mNew">0</div>
+        <span class="kpi-foot">Awaiting Contact</span>
+      </div>
+      <div class="kpi-card glow-purple">
+        <span class="kpi-label">Contacted</span>
+        <div class="kpi-value" id="mContacted">0</div>
+        <span class="kpi-foot">In Dialogue</span>
+      </div>
+      <div class="kpi-card glow-amber">
+        <span class="kpi-label">Follow-Ups Pending</span>
+        <div class="kpi-value" id="mFollowUpPending">0</div>
+        <span class="kpi-foot">Scheduled Tasks</span>
+      </div>
+      <div class="kpi-card glow-indigo">
+        <span class="kpi-label">In Progress</span>
+        <div class="kpi-value" id="mInProgress">0</div>
+        <span class="kpi-foot">Reviewing Plans</span>
+      </div>
+      <div class="kpi-card glow-emerald">
+        <span class="kpi-label">Verified Members</span>
+        <div class="kpi-value highlight-emerald" id="mVerified">0</div>
+        <span class="kpi-foot">Enrolment Complete</span>
+      </div>
+      <div class="kpi-card glow-green">
+        <span class="kpi-label">Conversion Rate</span>
+        <div class="kpi-value highlight-green" id="mConversion">0%</div>
+        <span class="kpi-foot">Lead-to-Verified</span>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 14: ADVANCED EXECUTIVE TELEMETRY & FUNNEL ANALYTICS -->
+    <!-- ======================================================== -->
+    <section class="telemetry-deck-wrapper" style="margin-bottom: 28px;">
+      
+      <!-- HEADER WITH LIVE TELEMETRY BADGE -->
+      <div class="telemetry-header-bar">
+        <div class="telemetry-title-cluster">
+          <div class="telemetry-icon-pulse">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="telemetry-main-title">
+              Funnel Telemetry & Lead Acquisition Intelligence
+            </h3>
+            <p class="telemetry-subtitle">Compliant Tracking Engine · Alpha Auron Performance Ops</p>
+          </div>
+        </div>
+        
+        <div class="telemetry-live-pill">
+          <span class="live-dot-ping"></span>
+          <span>LIVE TRACKING ACTIVE</span>
+        </div>
+      </div>
+
+      <!-- 4 EXECUTIVE METRIC CARDS -->
+      <div class="telemetry-cards-grid">
+        
+        <!-- CARD 1: UNIQUE VISITORS -->
+        <div class="tel-kpi-card card-cyan">
+          <div class="tel-card-top">
+            <span class="tel-card-label">Unique Visitors</span>
+            <div class="tel-badge-icon cyan-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+          </div>
+          <div class="tel-card-val" id="anaUnique">0</div>
+          <div class="tel-card-footer">
+            <span class="tel-tag-badge">Distinct IPs</span>
+            <span class="tel-subtext">Total traffic reach</span>
+          </div>
+        </div>
+
+        <!-- CARD 2: PLAN ENGAGEMENT -->
+        <div class="tel-kpi-card card-purple">
+          <div class="tel-card-top">
+            <span class="tel-card-label">Plan Section Views</span>
+            <div class="tel-badge-icon purple-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+          </div>
+          <div class="tel-card-val" id="anaPlanViews">0</div>
+          <div class="tel-card-footer">
+            <span class="tel-tag-badge">Tier Consideration</span>
+            <span class="tel-subtext">Browsed pricing tiers</span>
+          </div>
+        </div>
+
+        <!-- CARD 3: PLAN CTA CLICKS -->
+        <div class="tel-kpi-card card-rose">
+          <div class="tel-card-top">
+            <span class="tel-card-label">Plan CTA Clicks</span>
+            <div class="tel-badge-icon rose-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </div>
+          </div>
+          <div class="tel-card-val" id="anaPlanClicks">0</div>
+          <div class="tel-card-footer">
+            <span class="tel-tag-badge">High Purchase Intent</span>
+            <span class="tel-subtext">Plan select interactions</span>
+          </div>
+        </div>
+
+        <!-- CARD 4: FORM ABANDONMENT -->
+        <div class="tel-kpi-card card-amber">
+          <div class="tel-card-top">
+            <span class="tel-card-label">Form Abandonment</span>
+            <div class="tel-badge-icon amber-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+          </div>
+          <div class="tel-card-val" id="anaAbandons">0</div>
+          <div class="tel-card-footer">
+            <span class="tel-tag-badge">Drop-off Gap</span>
+            <span class="tel-subtext">Form started but unsaved</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ATTRIBUTION & TRAFFIC SOURCE ANALYSIS DECK -->
+      <div class="telemetry-breakdown-grid">
+        
+        <!-- TRAFFIC SOURCE BREAKDOWN -->
+        <div class="tel-data-card">
+          <div class="tel-data-header">
+            <div class="tel-data-heading-left">
+              <span class="tel-dot-cyan"></span>
+              <h4>Top Traffic Sources & Referrers</h4>
+            </div>
+            <span class="tel-pill-metric" id="telTotalViewsTag">0 Views</span>
+          </div>
+          <div class="tel-data-body">
+            <ul id="anaTrafficList" class="tel-channel-list">
+              <li class="tel-empty-row">No traffic recorded yet.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- CAMPAIGN ATTRIBUTION BREAKDOWN -->
+        <div class="tel-data-card">
+          <div class="tel-data-header">
+            <div class="tel-data-heading-left">
+              <span class="tel-dot-rose"></span>
+              <h4>Marketing Campaign Attribution</h4>
+            </div>
+            <span class="tel-pill-metric">UTM Tagged</span>
+          </div>
+          <div class="tel-data-body">
+            <ul id="anaCampaignList" class="tel-channel-list">
+              <li class="tel-empty-row">No active campaign tracking data.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- WORKSPACE PANEL -->
+    <section class="workspace-card">
+      <div class="toolbar-deck">
+        <div class="search-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="searchInput" placeholder="Search by name, email, or contact number...">
+        </div>
+        
+        <div class="filters-wrap">
+          <select id="statusFilter" class="filter-select">
+            <option value="ALL">All Statuses</option>
+            <option value="New Enquiry">New Enquiry</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Interested">Interested</option>
+            <option value="Official Website Shared">Official Website Shared</option>
+            <option value="Follow-Up Required">Follow-Up Required</option>
+            <option value="Enrolment in Progress">Enrolment in Progress</option>
+            <option value="Enrolled">Enrolled</option>
+            <option value="Verified">Verified</option>
+            <option value="Not Interested">Not Interested</option>
+            <option value="Closed">Closed</option>
+          </select>
+
+          <input type="date" id="dateFilter" class="filter-date" title="Filter by submission date">
+        </div>
+      </div>
+
+      <!-- MASTER RECORD TABLE -->
+      <div class="table-frame">
+        <table class="executive-table">
+          <thead>
+            <tr>
+              <th>Lead Reference</th>
+              <th>Candidate Profile</th>
+              <th>Track & Experience</th>
+              <th>Pipeline Status</th>
+              <th>Follow-Up & Notes</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leadsTableBody">
+            <tr>
+              <td colspan="6" class="table-loader">
+                <div class="spinner"></div> Loading active lead pipeline...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- VIEW DOSSIER MODAL -->
+  <div id="viewModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Enquiry Dossier</h3>
+        <button class="modal-close" onclick="closeModal('viewModal')">&times;</button>
+      </div>
+      <div id="viewContent" class="modal-body"></div>
+      <div class="modal-foot">
+        <button class="btn btn-outline btn-sm" onclick="closeModal('viewModal')">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL EDIT DOSSIER MODAL -->
+  <div id="editModal" class="modal-backdrop">
+    <div class="modal-box modal-lg">
+      <div class="modal-head">
+        <h3>Edit Candidate Dossier</h3>
+        <button class="modal-close" onclick="closeModal('editModal')">&times;</button>
+      </div>
+      <form id="editLeadForm" onsubmit="handleEditSubmit(event)">
+        <div class="modal-body">
+          <input type="hidden" id="editLeadId">
+          
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="editFullName">Full Name *</label>
+              <input type="text" id="editFullName" required>
+            </div>
+            <div class="form-group">
+              <label for="editMobile">Mobile Number *</label>
+              <input type="tel" id="editMobile" required>
+            </div>
+          </div>
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="editEmail">Email Address *</label>
+              <input type="email" id="editEmail" required>
+            </div>
+            <div class="form-group">
+              <label for="editCategory">Discipline Category *</label>
+              <input type="text" id="editCategory" required>
+            </div>
+          </div>
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="editPrimarySkills">Primary Skills</label>
+              <input type="text" id="editPrimarySkills">
+            </div>
+            <div class="form-group">
+              <label for="editPreferredDuration">Target Plan & Duration</label>
+              <select id="editPreferredDuration">
+                <optgroup label="6-Month Plans (Bi-Annual Track)">
+                  <option value="Starter (Level 1) - 6 Months">Level 1: Starter — ₹7,500 / 6 mo</option>
+                  <option value="Professional (Level 2) - 6 Months">Level 2: Professional — ₹13,500 / 6 mo</option>
+                  <option value="Specialist (Level 3) - 6 Months">Level 3: Specialist — ₹22,500 / 6 mo</option>
+                  <option value="Elite (Level 4) - 6 Months">Level 4: Elite — ₹36,500 / 6 mo</option>
+                  <option value="Auron (Level 5) - 6 Months">Level 5: Auron — ₹56,500 / 6 mo</option>
+                </optgroup>
+                <optgroup label="12-Month Plans (Annual Master Track)">
+                  <option value="Starter (Level 1) - 12 Months">Level 1: Starter — ₹12,000 / 12 mo</option>
+                  <option value="Professional (Level 2) - 12 Months">Level 2: Professional — ₹24,000 / 12 mo</option>
+                  <option value="Specialist (Level 3) - 12 Months">Level 3: Specialist — ₹42,000 / 12 mo</option>
+                  <option value="Elite (Level 4) - 12 Months">Level 4: Elite — ₹70,000 / 12 mo</option>
+                  <option value="Auron (Level 5) - 12 Months">Level 5: Auron — ₹1,10,000 / 12 mo</option>
+                </optgroup>
+                <option value="Custom / Undecided">Undecided / Custom Advisory</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="editExperienceLevel">Experience Level</label>
+              <select id="editExperienceLevel">
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Experienced">Experienced</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editLeadStatus">Pipeline Status</label>
+              <select id="editLeadStatus">
+                <option value="New Enquiry">New Enquiry</option>
+                <option value="Contacted">Contacted</option>
+                <option value="Interested">Interested</option>
+                <option value="Official Website Shared">Official Website Shared</option>
+                <option value="Follow-Up Required">Follow-Up Required</option>
+                <option value="Enrolment in Progress">Enrolment in Progress</option>
+                <option value="Enrolled">Enrolled</option>
+                <option value="Verified">Verified</option>
+                <option value="Not Interested">Not Interested</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="editFollowUpNotes">Follow-Up Notes</label>
+            <textarea id="editFollowUpNotes" rows="2" placeholder="Enter follow-up details..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="editNextDate">Next Scheduled Follow-Up Date</label>
+            <input type="date" id="editNextDate">
+          </div>
+        </div>
+        
+        <div class="modal-foot">
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('editModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
